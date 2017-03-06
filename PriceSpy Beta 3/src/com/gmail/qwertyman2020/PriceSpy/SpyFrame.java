@@ -22,7 +22,7 @@ public class SpyFrame extends JFrame implements Runnable {
 	private static SpyFrame  window;
 	private JButton btnNewButton;
 	private volatile Status status;
-
+	private final String version = "2.0";
 	
 	/**
 	 * Launch the application.
@@ -54,7 +54,7 @@ public class SpyFrame extends JFrame implements Runnable {
 		frmPricespy = new JFrame();
 		frmPricespy.setBounds(100, 100, 450, 300);
 		frmPricespy.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmPricespy.setTitle("PriceSpy");
+		frmPricespy.setTitle("PriceSpy V"+version);
 				
 		progressBar = new JProgressBar();
 		progressBar.setAlignmentX(Component.LEFT_ALIGNMENT);

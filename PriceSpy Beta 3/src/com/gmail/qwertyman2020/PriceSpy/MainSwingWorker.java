@@ -17,7 +17,7 @@ import javax.swing.SwingWorker;
 
 public class MainSwingWorker extends SwingWorker<Void,Status> {
 
-	String version = "1.95";
+	String version = "2.0";
 
 	private SpyFrame window;
 	public MainSwingWorker(SpyFrame nwindow){
@@ -116,7 +116,7 @@ public class MainSwingWorker extends SwingWorker<Void,Status> {
 
 					queries.remove(queryRand);
 					
-					status.setTitle("Price Spy - "+y+" pages to download for this domain.");
+					status.setTitle("Price Spy - "+y+" pages to download for this "+Domains.get(x).Name);
 					status.addProgress(prog);
 					this.publish(status);
 
