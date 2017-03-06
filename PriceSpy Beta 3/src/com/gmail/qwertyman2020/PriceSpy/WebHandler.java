@@ -37,7 +37,8 @@ public class WebHandler {
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", 
 					"application/x-www-form-urlencoded");
-			
+			connection.setRequestProperty("User-Agent",
+			        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
 			connection.setRequestProperty("Content-Length", 
 					Integer.toString(urlParameters.getBytes().length));
 			connection.setRequestProperty("Content-Language", "en-US");  
