@@ -34,7 +34,7 @@ public class WebHandler {
 			//Create connection
 			URL url = new URL(targetURL);
 			ProxyAuth.setProxy(proxy);	//might be redundant.
-			//java.net.Proxy prox = new java.net.Proxy(java.net.Proxy.Type.HTTP, new InetSocketAddress(proxy.IP,Integer.parseInt(proxy.Port)));
+
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", 

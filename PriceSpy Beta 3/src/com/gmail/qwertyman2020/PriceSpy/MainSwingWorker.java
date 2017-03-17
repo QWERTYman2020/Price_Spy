@@ -17,7 +17,7 @@ import javax.swing.SwingWorker;
 
 public class MainSwingWorker extends SwingWorker<Void,Status> {
 
-	String version = "2.03";
+	String version = "2.1";
 
 	private SpyFrame window;
 	public MainSwingWorker(SpyFrame nwindow){
