@@ -1,8 +1,6 @@
 package com.gmail.qwertyman2020.PriceSpy;
 
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
+import java.net.*;
 import java.util.Base64;
 import java.util.Properties;
 
@@ -16,7 +14,7 @@ public class ProxyAuth extends Authenticator {
     protected PasswordAuthentication getPasswordAuthentication() {
         return auth;
     }
-    public static HttpURLConnection setProxy(Proxy proxy,HttpURLConnection con) {
+    public static void setProxy(Proxy proxy) {
     	Properties props = new Properties(System.getProperties());
     	props.put("http.proxySet","true");
     	props.put("http.proxyHost",proxy.IP);
@@ -24,10 +22,14 @@ public class ProxyAuth extends Authenticator {
     	props.put("https.proxySet","true");
     	props.put("https.proxyHost",proxy.IP);
 		props.put("https.proxyPort",proxy.Port);
+    	System.setProperties(props);
+    }
+    
+    public static HttpURLConnection setConnection(Proxy proxy, HttpURLConnection con){
 		String encoded = new String(Base64.getEncoder().encode((proxy.User + ":" + proxy.Pass).getBytes()));
 		con.setRequestProperty("Proxy-Authorization", "Basic " + encoded);
     	Authenticator.setDefault(new ProxyAuth(proxy.User, proxy.Pass));
-    	System.setProperties(props);
+
     return con;
     }
 }

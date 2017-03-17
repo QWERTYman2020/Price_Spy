@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,8 @@ public class WebHandler {
 		try {
 			//Create connection
 			URL url = new URL(targetURL);
-
+			ProxyAuth.setProxy(proxy);	//might be redundant.
+			//java.net.Proxy prox = new java.net.Proxy(java.net.Proxy.Type.HTTP, new InetSocketAddress(proxy.IP,Integer.parseInt(proxy.Port)));
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", 
@@ -42,8 +44,8 @@ public class WebHandler {
 			connection.setRequestProperty("Content-Length", 
 					Integer.toString(urlParameters.getBytes().length));
 			connection.setRequestProperty("Content-Language", "en-US");  
-			connection = ProxyAuth.setProxy(proxy, connection);
 			connection.setReadTimeout(10000);
+			connection = ProxyAuth.setConnection(proxy, connection);
 			/*
 			System.out.println("started getting cookies");
 			String headerName=null;
@@ -62,7 +64,8 @@ public class WebHandler {
 			
 			connection.setUseCaches(false);
 			connection.setDoOutput(true);
-
+			//connection.connect();
+			
 			//Send request
 			DataOutputStream wr = new DataOutputStream (
 					connection.getOutputStream());
@@ -82,8 +85,8 @@ public class WebHandler {
 			Page = Response.toString();
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
-			Page = "woops";
+			System.out.print("!!caught error: ");
+			System.out.println(e.toString());
 			return false;
 		} finally {
 			if (connection != null) {
@@ -252,10 +255,11 @@ public class WebHandler {
 			connection.setRequestProperty("Content-Length", 
 					Integer.toString(urlParameters.getBytes().length));
 			connection.setRequestProperty("Content-Language", "en-US");  
-			connection = ProxyAuth.setProxy(proxy, connection);
+			ProxyAuth.setProxy(proxy);
+			connection = ProxyAuth.setConnection(proxy, connection);
 			connection.setUseCaches(false);
 			connection.setDoOutput(true);
-
+			//connection.connect();
 
 			//Send request
 			DataOutputStream wr = new DataOutputStream (

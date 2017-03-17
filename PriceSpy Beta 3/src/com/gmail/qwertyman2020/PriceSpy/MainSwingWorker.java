@@ -17,7 +17,7 @@ import javax.swing.SwingWorker;
 
 public class MainSwingWorker extends SwingWorker<Void,Status> {
 
-	String version = "2.0";
+	String version = "2.03";
 
 	private SpyFrame window;
 	public MainSwingWorker(SpyFrame nwindow){
@@ -26,6 +26,11 @@ public class MainSwingWorker extends SwingWorker<Void,Status> {
 
 	@Override
 	protected Void doInBackground() throws Exception {
+		Status status = new Status();
+		System.out.println(" before: " +System.getProperty("jdk.http.auth.tunneling.disabledSchemes"));
+		System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+		System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
+		System.out.println(" after: " +System.getProperty("jdk.http.auth.tunneling.disabledSchemes"));
 		try{
 
 			String[] props = new String[9];
@@ -70,8 +75,6 @@ public class MainSwingWorker extends SwingWorker<Void,Status> {
 			Items = FileAcc.readItems(QueryPath);
 			int total = Domains.size();
 
-			Status status = new Status();
-
 			status.setTitle("PriceSpy Beta V"+version+"  -  started working!!!");	
 			this.publish(status);
 
@@ -107,18 +110,19 @@ public class MainSwingWorker extends SwingWorker<Void,Status> {
 					if(webHandler.DownloadPage(currQuery[0],currQuery[1],proxy)){
 						System.out.println("data from "+Domains.get(x).Name+" recieved");	
 						webHandler.extractToDomain(Domains.get(x));
-						System.out.println("items extracted from "+Domains.get(x).Name);
-
-					}else{
-						//page downloading failed
+						System.out.println("items extracted from "+Domains.get(x).Name);					
+						status.setTitle("Price Spy - "+y+" pages to download for "+Domains.get(x).Name);
+						status.addProgress(prog);
+						this.publish(status);
+					}else{						//page downloading failed
+						
+						status.setTitle("Price Spy - PAGE DOWNLOAD FAILED - "+y+" pages to download for "+Domains.get(x).Name);
+						status.addProgress(prog);
+						this.publish(status);
 						System.out.println("page downloading failed :')");
 					}
 
 					queries.remove(queryRand);
-					
-					status.setTitle("Price Spy - "+y+" pages to download for this "+Domains.get(x).Name);
-					status.addProgress(prog);
-					this.publish(status);
 
 					//look, i know this is a very bad idea but it works.
 					//if you want to redesign the program for mutithreading feel free to do so.
@@ -159,6 +163,9 @@ public class MainSwingWorker extends SwingWorker<Void,Status> {
 			this.publish(status);
 
 			System.out.flush(); // make sure all messages are written to log
+		}catch (Exception e){
+			status.setTitle("unexpected end of execution");
+			this.publish(status);
 		}finally{
 			System.out.println("-_-^-_-^-_-^-_-^---EOF---_-^-_-^-_-^-_-^-");
 			System.out.flush();

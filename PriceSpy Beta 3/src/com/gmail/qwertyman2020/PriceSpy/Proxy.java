@@ -17,6 +17,7 @@ public class Proxy {
 	public boolean validate(){
 		String Page="";
 		try{
+			System.out.println("validate started");
 			Page=WebHandler.DownloadPage2("http://checkip.amazonaws.com","",this);
 			if(Page.trim().equals(IP)){
 					return true;
